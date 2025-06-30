@@ -1,6 +1,20 @@
 import s from "./ImageCard.module.css";
+import { OpenModalType } from "../../App.types";
 
-const ImageCard = ({ image, openModal }) => {
+type ImageCardProps = {
+  image: ImageProps;
+  openModal: OpenModalType;
+};
+
+type ImageProps = {
+  urls: {
+    small: string;
+    regular: string;
+  };
+  alt_description: string;
+};
+
+const ImageCard = ({ image, openModal }: ImageCardProps) => {
   const { urls, alt_description } = image;
 
   return (

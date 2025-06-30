@@ -7,16 +7,20 @@ import { Loader } from "./components/Loader/Loader";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import ImageModal from "./components/ImageModal/ImageModal";
+import { Image, OpenModalType } from "./App.types";
 
 function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalImage, setModalImage] = useState(null);
+  const [modalImage, setModalImage] = useState<{
+    src: string;
+    alt: string;
+  } | null>(null);
 
   useEffect(() => {
     if (!query) return;
@@ -24,7 +28,7 @@ function App() {
     const fetchImages = async () => {
       try {
         setLoading(true);
-        setError(false);
+        // setError(false);
         const data = await getImage(query, page);
         const { results, total_pages, total } = data;
         setTotal(total_pages);
@@ -35,7 +39,7 @@ function App() {
           );
         }
 
-        setImages((prev) => [...prev, ...results]);
+        setImages((prev: Image[]) => [...prev, ...results]);
       } catch {
         setError("There was an error fetching the images");
       } finally {
@@ -46,7 +50,7 @@ function App() {
     fetchImages();
   }, [query, page]);
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: string) => {
     setQuery(query);
     setPage(1);
     setImages([]);
@@ -58,8 +62,8 @@ function App() {
     setPage(page + 1);
   };
 
-  const handleOpenModal = (src, alt) => {
-    setModalImage({ src, alt });
+  const handleOpenModal: OpenModalType = (src, alt) => {
+    setModalImage({ src, alt: alt ?? "No description" });
     setModalIsOpen(true);
   };
 
@@ -74,7 +78,7 @@ function App() {
       <SearchBar onSearch={handleSearch} />
       <Toaster />
       {loading && <Loader />}
-      {error && <ErrorMessage message={error} />}
+      {error && <ErrorMessage error={error} />}
       {images.length > 0 && (
         <ImageGallery images={images} openModal={handleOpenModal} />
       )}
@@ -82,8 +86,8 @@ function App() {
       <ImageModal
         modalIsOpen={modalIsOpen}
         closeModal={handleCloseModal}
-        src={modalImage?.src}
-        alt={modalImage?.alt}
+        src={modalImage?.src ?? ""}
+        alt={modalImage?.alt ?? ""}
       />
     </>
   );

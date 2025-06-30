@@ -1,7 +1,13 @@
 import ImageCard from "../ImageCard/ImageCard";
 import s from "./ImageGallery.module.css";
+import { Image, OpenModalType } from "../../App.types";
 
-const ImageGallery = ({ images, openModal }) => {
+type ImageGalleryProps = {
+  images: Image[];
+  openModal: OpenModalType;
+};
+
+const ImageGallery = ({ images, openModal }: ImageGalleryProps) => {
   return (
     <ul className={s.gallery}>
       {images.map((image) => (

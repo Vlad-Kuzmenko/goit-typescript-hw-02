@@ -1,7 +1,7 @@
 import { ScaleLoader } from "react-spinners";
 import s from "./Loader.module.css";
 
-const override = {
+const override: React.CSSProperties = {
   position: "absolute",
   top: "50%",
   left: "50%",
