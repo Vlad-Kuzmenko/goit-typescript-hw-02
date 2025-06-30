@@ -11,7 +11,7 @@ type ImageProps = {
     small: string;
     regular: string;
   };
-  alt_description: string;
+  alt_description: string | null;
 };
 
 const ImageCard = ({ image, openModal }: ImageCardProps) => {
@@ -22,7 +22,7 @@ const ImageCard = ({ image, openModal }: ImageCardProps) => {
       <img
         className={s.image}
         src={urls.small}
-        alt={alt_description}
+        alt={alt_description ?? "Image"}
         onClick={() => openModal(urls.regular, alt_description)}
       />
     </div>
